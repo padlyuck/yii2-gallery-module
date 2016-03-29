@@ -2,15 +2,17 @@
 
 namespace sadovojav\gallery\controllers;
 
-use Yii;
-use sadovojav\gallery\models\GalleryFile;
 use sadovojav\gallery\models\Gallery;
+use sadovojav\gallery\models\GalleryFile;
 use sadovojav\gallery\models\GallerySearch;
 use sadovojav\gallery\Module;
-use yii\web\BadRequestHttpException;
-use yii\web\NotFoundHttpException;
-use yii\filters\VerbFilter;
+use Yii;
 use yii\filters\AccessControl;
+use yii\filters\VerbFilter;
+use yii\helpers\FileHelper;
+use yii\web\BadRequestHttpException;
+use yii\web\Controller;
+use yii\web\NotFoundHttpException;
 use yii\web\Response;
 use yii\web\UploadedFile;
 
@@ -18,14 +20,14 @@ use yii\web\UploadedFile;
  * Class GalleryController
  * @package sadovojav\gallery\controllers
  */
-class GalleryController extends \yii\web\Controller
+class GalleryController extends Controller
 {
     public function behaviors()
     {
         return [
             'access' => [
                 'class' => AccessControl::className(),
-                'only' => ['index', 'create', 'view', 'delete', 'update', 'upload', 'remove', 'caption'],
+                'only'  => ['index', 'create', 'view', 'delete', 'update', 'upload', 'remove', 'caption'],
                 'rules' => [
                     [
                         'allow' => true,
@@ -33,12 +35,12 @@ class GalleryController extends \yii\web\Controller
                     ],
                 ],
             ],
-            'verbs' => [
-                'class' => VerbFilter::className(),
+            'verbs'  => [
+                'class'   => VerbFilter::className(),
                 'actions' => [
-                    'delete' => ['post'],
-                    'upload' => ['post'],
-                    'remove' => ['post'],
+                    'delete'  => ['post'],
+                    'upload'  => ['post'],
+                    'remove'  => ['post'],
                     'caption' => ['post'],
                 ],
             ],
@@ -57,15 +59,11 @@ class GalleryController extends \yii\web\Controller
 
         $baseDir = Yii::getAlias(Module::getInstance()->basePath);
 
-        if (!is_dir($baseDir)) {
-            mkdir($baseDir);
-        }
+        FileHelper::createDirectory($baseDir);
 
         $dir = $baseDir . DIRECTORY_SEPARATOR . $_POST['galleryId'];
 
-        if (!is_dir($dir)) {
-            mkdir($dir);
-        }
+        FileHelper::createDirectory($dir);
 
         $response = [];
 
@@ -84,11 +82,11 @@ class GalleryController extends \yii\web\Controller
 
             if ($model->save()) {
                 $response = [
-                    'status' => true,
+                    'status'  => true,
                     'message' => 'Success',
-                    'html' => $this->renderAjax('_image', [
-                        'model' => $model
-                    ])
+                    'html'    => $this->renderAjax('_image', [
+                        'model' => $model,
+                    ]),
                 ];
             }
 
@@ -100,8 +98,10 @@ class GalleryController extends \yii\web\Controller
 
     /**
      * Deletes an existing gallery fle model.
-     * @param integer $id
      * @return mixed
+     * @throws BadRequestHttpException
+     * @throws \Exception
+     * @internal param int $id
      */
     public function actionRemove()
     {
@@ -113,6 +113,7 @@ class GalleryController extends \yii\web\Controller
             throw new BadRequestHttpException();
         }
 
+        /** @var GalleryFile $model */
         $model = GalleryFile::findOne(Yii::$app->request->post('id'));
 
         if (file_exists($model->path)) {
@@ -121,7 +122,7 @@ class GalleryController extends \yii\web\Controller
 
         if ($model->delete()) {
             $response = [
-                'status' => true,
+                'status'  => true,
                 'message' => 'Success',
             ];
         }
@@ -144,7 +145,7 @@ class GalleryController extends \yii\web\Controller
 
         if ($model->save()) {
             $response = [
-                'status' => true,
+                'status'  => true,
                 'message' => 'Success',
             ];
         }
@@ -154,7 +155,9 @@ class GalleryController extends \yii\web\Controller
 
     /**
      * Get unique name
+     *
      * @param $file
+     *
      * @return string
      */
     private function getUniqueName($file)
@@ -177,13 +180,15 @@ class GalleryController extends \yii\web\Controller
 
         return $this->render('index', [
             'dataProvider' => $dataProvider,
-            'searchModel' => $searchModel
+            'searchModel'  => $searchModel,
         ]);
     }
 
     /**
      * Displays a single gallery model.
+     *
      * @param integer $id
+     *
      * @return mixed
      */
     public function actionView($id)
@@ -202,7 +207,8 @@ class GalleryController extends \yii\web\Controller
     {
         $model = new Gallery();
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+        $post = Yii::$app->request->post();
+        if ($model->load($post) && $model->save()) {
             return $this->redirect(['update', 'id' => $model->id]);
         } else {
             return $this->render('create', [
@@ -214,14 +220,17 @@ class GalleryController extends \yii\web\Controller
     /**
      * Updates an existing gallery model.
      * If update is successful, the browser will be redirected to the 'view' page.
+     *
      * @param integer $id
+     *
      * @return mixed
      */
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+        $post = Yii::$app->request->post();
+        if ($model->load($post) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
             return $this->render('update', [
@@ -233,7 +242,9 @@ class GalleryController extends \yii\web\Controller
     /**
      * Deletes an existing gallery model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
+     *
      * @param integer $id
+     *
      * @return mixed
      */
     public function actionDelete($id)
@@ -246,7 +257,9 @@ class GalleryController extends \yii\web\Controller
     /**
      * Finds the gallery model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
+     *
      * @param integer $id
+     *
      * @return gallery the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */

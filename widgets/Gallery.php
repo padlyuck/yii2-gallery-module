@@ -2,54 +2,55 @@
 
 namespace sadovojav\gallery\widgets;
 
+use sadovojav\gallery\models\Gallery as BaseGallery;
 use Yii;
+use yii\base\Widget;
 use yii\caching\DbDependency;
 use yii\helpers\Html;
-use sadovojav\gallery\models\Gallery as BaseGallery;
 
 /**
  * Class Gallery
  * @package sadovojav\gallery\widgets
  */
-class Gallery extends \yii\base\Widget
+class Gallery extends Widget
 {
     /**
      * @var
      */
     public $galleryId;
-
     /**
      * @var bool
      */
     public $caption = false;
-
     /**
      * @var
      */
-    public $template = null;
+    public $template;
 
     public function run()
     {
         $dependency = new DbDependency();
         $dependency->sql = 'SELECT MAX(updated) FROM {{%gallery}}';
 
+        /** @var \sadovojav\gallery\Module $module */
+        $module = Yii::$app->getModule('gallery');
         $model = BaseGallery::getDb()->cache(function () {
             return BaseGallery::find()
                 ->where('id = :id', [
-                    ':id' => $this->galleryId
+                    ':id' => $this->galleryId,
                 ])
                 ->active()
                 ->one();
-        }, Yii::$app->getModule('gallery')->queryCacheDuration, $dependency);
+        }, $module->queryCacheDuration, $dependency);
 
-        if (is_null($model) || !count($model->files)) {
+        if (!$model || !$model->files) {
             return false;
         }
 
-        if (!is_null($this->template)) {
+        if (!$this->template) {
             return $this->render($this->template, [
-                'model' => $model,
-                'models' => $model->files
+                'model'  => $model,
+                'models' => $model->files,
             ]);
         } else {
             return $this->getDefaultGallery($model);
@@ -58,7 +59,9 @@ class Gallery extends \yii\base\Widget
 
     /**
      * Get default gallery style image/caption
+     *
      * @param $model
+     *
      * @return string
      */
     private function getDefaultGallery($model)
@@ -70,13 +73,13 @@ class Gallery extends \yii\base\Widget
         foreach ($model->files as $value) {
             $html .= Html::beginTag('div');
             $html .= Html::img($value->src, [
-                'alt' => $this->caption ? $value->caption : null,
-                'class' => 'img-responsive'
+                'alt'   => $this->caption ? $value->caption : null,
+                'class' => 'img-responsive',
             ]);
 
             if ($this->caption) {
                 $html .= Html::tag('div', $value->caption, [
-                    'class' => 'caption'
+                    'class' => 'caption',
                 ]);
             }
 

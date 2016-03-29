@@ -2,25 +2,27 @@
 
 namespace sadovojav\gallery\models;
 
-use Yii;
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
-use yii\db\Expression;
 use sadovojav\gallery\Module;
+use Yii;
 use yii\behaviors\TimestampBehavior;
+use yii\db\ActiveRecord;
+use yii\db\Expression;
+use yii\helpers\FileHelper;
 
 /**
  * This is the model class for table "{{%gallery}}".
  *
- * @property integer $id
- * @property string $name
- * @property integer $status
- * @property string $created
- * @property string $updated
+ * @property integer       $id
+ * @property string        $name
+ * @property integer       $status
+ * @property string        $created
+ * @property string        $updated
  *
  * @property GalleryFile[] $files
  */
-class Gallery extends \yii\db\ActiveRecord
+class Gallery extends ActiveRecord
 {
     /**
      * @inheritdoc
@@ -37,11 +39,11 @@ class Gallery extends \yii\db\ActiveRecord
     {
         return [
             'timestamp' => [
-                'class' => TimestampBehavior::className(),
+                'class'              => TimestampBehavior::className(),
                 'createdAtAttribute' => 'created',
                 'updatedAtAttribute' => 'updated',
-                'value' => new Expression('NOW()'),
-            ]
+                'value'              => new Expression('NOW()'),
+            ],
         ];
     }
 
@@ -64,9 +66,9 @@ class Gallery extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'id' => Module::t('default', 'ID'),
-            'name' => Module::t('default', 'NAME'),
-            'status' => Module::t('default', 'STATUS'),
+            'id'      => Module::t('default', 'ID'),
+            'name'    => Module::t('default', 'NAME'),
+            'status'  => Module::t('default', 'STATUS'),
             'created' => Module::t('default', 'CREATED'),
             'updated' => Module::t('default', 'UPDATED'),
         ];
@@ -75,7 +77,7 @@ class Gallery extends \yii\db\ActiveRecord
     public function beforeSave($insert)
     {
         if (parent::beforeSave($insert)) {
-           $this->updatePositions();
+            $this->updatePositions();
 
             return true;
         } else {
@@ -86,21 +88,14 @@ class Gallery extends \yii\db\ActiveRecord
     public function afterSave($insert, $changedAttributes)
     {
         $baseDir = Yii::getAlias(Module::getInstance()->basePath);
-
-        if (!is_dir($baseDir)) {
-            mkdir($baseDir);
-        }
-
+        FileHelper::createDirectory($baseDir);
         $dir = $baseDir . DIRECTORY_SEPARATOR . $this->id;
-
-        if (!is_dir($dir)) {
-            mkdir($dir);
-        }
+        FileHelper::createDirectory($dir);
     }
 
     public function afterDelete()
     {
-       $this->removeModelDirectory();
+        $this->removeModelDirectory();
     }
 
     /**
@@ -121,8 +116,8 @@ class Gallery extends \yii\db\ActiveRecord
         $it = new RecursiveDirectoryIterator($dir, RecursiveDirectoryIterator::SKIP_DOTS);
         $files = new RecursiveIteratorIterator($it, RecursiveIteratorIterator::CHILD_FIRST);
 
-        foreach($files as $file) {
-            if ($file->isDir()){
+        foreach ($files as $file) {
+            if ($file->isDir()) {
                 rmdir($file->getRealPath());
             } else {
                 unlink($file->getRealPath());
@@ -145,18 +140,20 @@ class Gallery extends \yii\db\ActiveRecord
 
         $positions = explode('|', $_POST['positions']);
 
-        if (!count($positions)) {
+        if (!$positions) {
             return false;
         }
 
         $when = '';
 
+        $where = [];
         foreach ($positions as $key => $value) {
             $when .= ' WHEN ' . $value . ' THEN ' . $key;
             $where[] = $value;
         }
 
-        $sql = 'UPDATE {{%gallery_file}} SET position = CASE id' . $when . ' END WHERE id IN (' . implode(', ', $where) . ')';
+        $sql = 'UPDATE {{%gallery_file}} SET position = CASE id' . $when . ' END WHERE id IN (' . implode(', ',
+                $where) . ')';
 
         $command = self::getDb()->createCommand($sql);
 
@@ -168,9 +165,6 @@ class Gallery extends \yii\db\ActiveRecord
      */
     public function getFiles()
     {
-        return $this->hasMany(GalleryFile::className(), ['galleryId' => 'id'])
-            ->orderBy([
-                'position' => SORT_ASC
-            ]);
+        return $this->hasMany(GalleryFile::className(), ['galleryId' => 'id'])->orderBy(['position' => SORT_ASC]);
     }
 }

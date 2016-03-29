@@ -3,6 +3,7 @@
 namespace sadovojav\gallery\models;
 
 use Yii;
+use yii\db\ActiveRecord;
 use yii\helpers\FileHelper;
 
 /**
@@ -10,11 +11,14 @@ use yii\helpers\FileHelper;
  *
  * @property integer $id
  * @property integer $galleryId
- * @property string $file
- * @property string $caption
+ * @property string  $file
+ * @property string  $caption
  * @property integer $position
+ *
+ * @property string  $path
+ * @property string  $src
  */
-class GalleryFile extends \yii\db\ActiveRecord
+class GalleryFile extends ActiveRecord
 {
     /**
      * @inheritdoc
@@ -33,7 +37,7 @@ class GalleryFile extends \yii\db\ActiveRecord
             [['galleryId', 'file'], 'required'],
             [['galleryId', 'position'], 'integer'],
             ['position', 'default', 'value' => 0],
-            [['caption', 'file'], 'string', 'max' => 255]
+            [['caption', 'file'], 'string', 'max' => 255],
         ];
     }
 
@@ -45,7 +49,8 @@ class GalleryFile extends \yii\db\ActiveRecord
     {
         $path = DIRECTORY_SEPARATOR . preg_replace('/^@(\w+)\//i', '', Yii::$app->getModule('gallery')->basePath);
 
-        return FileHelper::normalizePath($path . DIRECTORY_SEPARATOR . $this->galleryId . DIRECTORY_SEPARATOR . $this->file, DIRECTORY_SEPARATOR);
+        return FileHelper::normalizePath($path . DIRECTORY_SEPARATOR . $this->galleryId . DIRECTORY_SEPARATOR . $this->file,
+            DIRECTORY_SEPARATOR);
     }
 
     /**

@@ -1,12 +1,11 @@
 <?php
 
-use yii\helpers\Html;
 use sadovojav\gallery\Module;
 
 $this->title = Module::t('default', 'CREATE');
 $this->params['breadcrumbs'] = [
     ['label' => Module::t('default', 'GALLERIES'), 'url' => ['index']],
-    $this->title
+    $this->title,
 ];
 
 ?>

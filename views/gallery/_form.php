@@ -3,7 +3,7 @@
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use sadovojav\gallery\Module;
-use kartik\widgets\FileInput;
+use kartik\file\FileInput;
 use kartik\switchinput\SwitchInput;
 use sadovojav\gallery\AssetBundle;
 

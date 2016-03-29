@@ -14,7 +14,7 @@ ALL_EXIT_CODE=0
 for PACKAGE_FILE in meteor/package*.js; do
 
   # Meteor expects package.js to be in the root directory of the checkout, so copy there our package file under that name, temporarily
-  cp $PACKAGE_FILE ./package.js
+  cp ${PACKAGE_FILE} ./package.js
 
   # publish package, creating it if it's the first time we're publishing
   PACKAGE_NAME=$(grep -i name package.js | head -1 | cut -d "'" -f 2)
@@ -37,4 +37,4 @@ for PACKAGE_FILE in meteor/package*.js; do
 
 done
 
-exit $ALL_EXIT_CODE
+exit ${ALL_EXIT_CODE}

@@ -5,23 +5,23 @@ return [
 
     'GALLERY_MANAGER' => 'Gallery manager',
 
-    'CREATE' => 'Create',
+    'CREATE'  => 'Create',
     'CREATED' => 'Created',
-    'UPDATE' => 'Update',
+    'UPDATE'  => 'Update',
     'UPDATED' => 'Updated',
-    'DELETE' => 'Delete',
-    'RESET' => 'Reset',
-    'VIEW' => 'View',
+    'DELETE'  => 'Delete',
+    'RESET'   => 'Reset',
+    'VIEW'    => 'View',
 
-    'ID' => 'ID',
-    'NAME' => 'Name',
-    'STATUS' => 'Status',
-    'CAPTION' => 'Caption...',
-    'ORIGINAL' => 'Original',
+    'ID'             => 'ID',
+    'NAME'           => 'Name',
+    'STATUS'         => 'Status',
+    'CAPTION'        => 'Caption...',
+    'ORIGINAL'       => 'Original',
     'UPDATE_CAPTION' => 'Update caption',
-    'REMOVE_IMAGE' => 'Removoe image',
+    'REMOVE_IMAGE'   => 'Removoe image',
 
     'ATTENTION_SAVE_MODEL' => '<strong>Attention!</strong> Save the model to work with the gallery',
 
-    'DELETE_ITEM' => 'Are you sure you want to delete this item?'
+    'DELETE_ITEM' => 'Are you sure you want to delete this item?',
 ];

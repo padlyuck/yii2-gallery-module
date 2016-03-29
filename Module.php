@@ -11,16 +11,6 @@ use Yii;
 class Module extends \yii\base\Module
 {
     /**
-     * @var string
-     */
-    public $controllerNamespace = 'sadovojav\gallery\controllers';
-
-    /**
-     * @var string
-     */
-    public $basePath = '@webroot/galleries';
-
-    /**
      * @var int
      */
     public $queryCacheDuration = 604800;
@@ -36,8 +26,9 @@ class Module extends \yii\base\Module
     public function init()
     {
         parent::init();
-
         $this->registerTranslations();
+        $this->controllerNamespace = 'sadovojav\gallery\controllers';
+        $this->basePath = '@webroot/galleries';
     }
 
     public function registerTranslations()

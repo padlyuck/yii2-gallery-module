@@ -1,3 +1,4 @@
+#!/usr/bin/env bash
 # sanity check: make sure we're in the root directory of the example
 cd "$( dirname "$0" )"
 

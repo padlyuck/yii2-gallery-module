@@ -2,11 +2,13 @@
 
 namespace sadovojav\gallery\models;
 
+use yii\db\ActiveQuery;
+
 /**
  * Class Query
  * @package sadovojav\gallery\models
  */
-class Query extends \yii\db\ActiveQuery
+class Query extends ActiveQuery
 {
     /**
      * @param bool $state
