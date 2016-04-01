@@ -20,6 +20,8 @@ class Module extends \yii\base\Module
      */
     public $uniqueName = false;
 
+    public $uploadPath = '@webroot/galleries';
+
     const STATUS_INACTIVE = 0;
     const STATUS_ACTIVE = 1;
 
@@ -28,7 +30,6 @@ class Module extends \yii\base\Module
         parent::init();
         $this->registerTranslations();
         $this->controllerNamespace = 'sadovojav\gallery\controllers';
-        $this->basePath = '@webroot/galleries';
     }
 
     public function registerTranslations()

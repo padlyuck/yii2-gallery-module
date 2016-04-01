@@ -87,10 +87,8 @@ class Gallery extends ActiveRecord
 
     public function afterSave($insert, $changedAttributes)
     {
-        $baseDir = Yii::getAlias(Module::getInstance()->basePath);
+        $baseDir = Yii::getAlias(Module::getInstance()->uploadPath . DIRECTORY_SEPARATOR . $this->id);
         FileHelper::createDirectory($baseDir);
-        $dir = $baseDir . DIRECTORY_SEPARATOR . $this->id;
-        FileHelper::createDirectory($dir);
     }
 
     public function afterDelete()
@@ -112,7 +110,7 @@ class Gallery extends ActiveRecord
      */
     private function removeModelDirectory()
     {
-        $dir = Yii::getAlias(Module::getInstance()->basePath . DIRECTORY_SEPARATOR . $this->id);
+        $dir = Yii::getAlias(Module::getInstance()->uploadPath . DIRECTORY_SEPARATOR . $this->id);
         $it = new RecursiveDirectoryIterator($dir, RecursiveDirectoryIterator::SKIP_DOTS);
         $files = new RecursiveIteratorIterator($it, RecursiveIteratorIterator::CHILD_FIRST);
 

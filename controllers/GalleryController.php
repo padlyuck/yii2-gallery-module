@@ -57,11 +57,7 @@ class GalleryController extends Controller
 
         $files = UploadedFile::getInstancesByName('files');
 
-        $baseDir = Yii::getAlias(Module::getInstance()->basePath);
-
-        FileHelper::createDirectory($baseDir);
-
-        $dir = $baseDir . DIRECTORY_SEPARATOR . $_POST['galleryId'];
+        $dir = Yii::getAlias(Module::getInstance()->uploadPath . DIRECTORY_SEPARATOR . $_POST['galleryId']);
 
         FileHelper::createDirectory($dir);
 

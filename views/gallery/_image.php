@@ -6,7 +6,7 @@ use yii\helpers\Html;
 ?>
 
 <div class="image col-lg-3 col-md-4 col-sm-6 col-xs-12" data-id="<?= $model->id ?>">
-    <div class="wrapper">
+    <div class="image-wrapper">
         <div class="handle">
             <img src="<?= $model->src; ?>" class="portrait img-responsive"/>
         </div>

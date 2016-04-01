@@ -43,11 +43,11 @@ class Gallery extends Widget
                 ->one();
         }, $module->queryCacheDuration, $dependency);
 
-        if (!$model || !$model->files) {
+        if (!$model || !$model->files && !$this->template) {
             return false;
         }
 
-        if (!$this->template) {
+        if ($this->template) {
             return $this->render($this->template, [
                 'model'  => $model,
                 'models' => $model->files,

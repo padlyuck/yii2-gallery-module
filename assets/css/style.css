@@ -15,17 +15,18 @@
     background-repeat: no-repeat;
     opacity: 0.6;
 }
-.image .wrapper {
+.image .image-wrapper {
     border: 1px solid #ddd;
 }
-.image .wrapper .handle {
+.image .image-wrapper .handle {
     height: 175px;
     overflow: hidden;
     position: relative;
     vertical-align: middle;
     cursor: move;
+    height: 240px;
 }
-.image .wrapper .handle img {
+.image .image-wrapper .handle img {
     position: absolute;
     left: 50%;
     top: 50%;
@@ -35,22 +36,22 @@
     -ms-transform: translate(-50%, -50%);
     transform: translate(-50%, -50%);
 }
-.image .wrapper .handle img.portrait {
+.image .image-wrapper .handle img.portrait {
     width: 100%;
     height: auto;
 }
-.image .wrapper .bottom {
+.image .image-wrapper .bottom {
     padding: 5px;
 }
-.image .wrapper .bottom .actions {
+.image .image-wrapper .bottom .actions {
     text-align: right;
     padding-top: 3px;
 }
-.image .wrapper .bottom .actions > button {
+.image .image-wrapper .bottom .actions > button {
     background: none;
     border: 0;
 }
-.image .wrapper .bottom .actions i {
+.image .image-wrapper .bottom .actions i {
     cursor: pointer;
     padding: 1px 5px;
     font-size: 12px;
@@ -58,16 +59,16 @@
     border-radius: 3px;
     border: 1px solid #ccc;
 }
-.image .wrapper .bottom .actions i:hover {
+.image .image-wrapper .bottom .actions i:hover {
     background: #e6e6e6;
 }
-.image .wrapper .bottom .actions .watch {
+.image .image-wrapper .bottom .actions .watch {
     color: #000;
 }
-.image .wrapper .bottom .actions .edit {
+.image .image-wrapper .bottom .actions .edit {
     color: #31708f;
 }
-.image .wrapper .bottom .actions .remove {
+.image .image-wrapper .bottom .actions .remove {
     color: #a94442;
 }
 .file-preview-frame {

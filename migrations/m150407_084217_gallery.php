@@ -47,11 +47,9 @@ class m150407_084217_gallery extends Migration
 
     public function down()
     {
-        echo "m150407_084217_gallery cannot be reverted.\n";
-
-        $this->dropTable('{{%gallery}}');
         $this->dropTable('{{%gallery_file}}');
+        $this->dropTable('{{%gallery}}');
 
-        return false;
+        return true;
     }
 }
