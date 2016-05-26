@@ -13,6 +13,7 @@ use yii\helpers\FileHelper;
  * @property integer $galleryId
  * @property string  $file
  * @property string  $caption
+ * @property string  $url
  * @property integer $position
  *
  * @property string  $path
@@ -37,7 +38,7 @@ class GalleryFile extends ActiveRecord
             [['galleryId', 'file'], 'required'],
             [['galleryId', 'position'], 'integer'],
             ['position', 'default', 'value' => 0],
-            [['caption', 'file'], 'string', 'max' => 255],
+            [['caption', 'file', 'url'], 'string', 'max' => 255],
         ];
     }
 

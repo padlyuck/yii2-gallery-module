@@ -17,6 +17,7 @@ return [
     'NAME'           => 'Name',
     'STATUS'         => 'Status',
     'CAPTION'        => 'Caption...',
+    'URL'            => 'Url',
     'ORIGINAL'       => 'Original',
     'UPDATE_CAPTION' => 'Update caption',
     'REMOVE_IMAGE'   => 'Removoe image',

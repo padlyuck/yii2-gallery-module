@@ -138,6 +138,7 @@ class GalleryController extends Controller
 
         $model = GalleryFile::findOne(Yii::$app->request->post('id'));
         $model->caption = Yii::$app->request->post('caption');
+        $model->url = Yii::$app->request->post('url');
 
         if ($model->save()) {
             $response = [

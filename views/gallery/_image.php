@@ -16,6 +16,11 @@ use yii\helpers\Html;
                 'class'       => 'form-control',
                 'placeholder' => Module::t('default', 'CAPTION'),
             ]); ?>
+            <br>
+            <?= Html::textInput('url', $model->caption, [
+                'class'       => 'form-control',
+                'placeholder' => Module::t('default', 'URL'),
+            ]); ?>
 
             <div class="actions">
                 <a href="<?= $model->src; ?>" rel="<?= $model->galleryId; ?>" class="fancy"

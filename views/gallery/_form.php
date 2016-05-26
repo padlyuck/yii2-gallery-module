@@ -49,12 +49,13 @@ if (!$model->isNewRecord) {
         $(document).on("click", ".edit", function(e) {
             var parent = $(this).closest(".image");
             var id = parent.attr("data-id");
-            var caption = parent.find("input[type=text]").val();
+            var caption = parent.find("input[name=caption]").val();
+            var url = parent.find("input[name=url]").val();
 
             $.ajax({
                 type: "POST",
                 url: "' . Yii::$app->urlManager->createUrl(['/gallery/gallery/caption']) . '",
-                data: {"id": id, "caption": caption},
+                data: {"id": id, "caption": caption, "url": url},
                 beforeSend: function () {
                     parent.addClass("preload");
                 },

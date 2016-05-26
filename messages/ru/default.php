@@ -17,6 +17,7 @@ return [
     'NAME'           => 'Название',
     'STATUS'         => 'Статус',
     'CAPTION'        => 'Подпись...',
+    'URL'            => 'Url',
     'ORIGINAL'       => 'Оригинал',
     'UPDATE_CAPTION' => 'Обновить подпись',
     'REMOVE_IMAGE'   => 'Удалить изображение',
