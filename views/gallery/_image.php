@@ -17,7 +17,7 @@ use yii\helpers\Html;
                 'placeholder' => Module::t('default', 'CAPTION'),
             ]); ?>
             <br>
-            <?= Html::textInput('url', $model->caption, [
+            <?= Html::textInput('url', $model->url, [
                 'class'       => 'form-control',
                 'placeholder' => Module::t('default', 'URL'),
             ]); ?>
