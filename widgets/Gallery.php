@@ -19,6 +19,10 @@ class Gallery extends Widget
      */
     public $galleryId;
     /**
+     * @var
+     */
+    public $galleryCode;
+    /**
      * @var bool
      */
     public $caption = false;
@@ -34,14 +38,21 @@ class Gallery extends Widget
 
         /** @var \sadovojav\gallery\Module $module */
         $module = Yii::$app->getModule('gallery');
-        $model = BaseGallery::getDb()->cache(function () {
-            return BaseGallery::find()
-                ->where('id = :id', [
-                    ':id' => $this->galleryId,
-                ])
-                ->active()
-                ->one();
-        }, $module->queryCacheDuration, $dependency);
+        if ($this->galleryId) {
+            $model = BaseGallery::getDb()->cache(function () {
+                return BaseGallery::find()
+                                  ->where('id = :id', [':id' => $this->galleryId])
+                                  ->active()
+                                  ->one();
+            }, $module->queryCacheDuration, $dependency);
+        } else {
+            $model = BaseGallery::getDb()->cache(function () {
+                return BaseGallery::find()
+                                  ->where('code = :code', [':code' => $this->galleryCode])
+                                  ->active()
+                                  ->one();
+            }, $module->queryCacheDuration, $dependency);
+        }
 
         if (!$model || !$model->files && !$this->template) {
             return false;
@@ -49,7 +60,7 @@ class Gallery extends Widget
 
         if ($this->template) {
             return $this->render($this->template, [
-                'model'  => $model,
+                'model' => $model,
                 'models' => $model->files,
             ]);
         } else {
@@ -73,7 +84,7 @@ class Gallery extends Widget
         foreach ($model->files as $value) {
             $html .= Html::beginTag('div');
             $html .= Html::img($value->src, [
-                'alt'   => $this->caption ? $value->caption : null,
+                'alt' => $this->caption ? $value->caption : null,
                 'class' => 'img-responsive',
             ]);
 

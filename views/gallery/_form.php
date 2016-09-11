@@ -1,11 +1,11 @@
 <?php
 
-use yii\helpers\Html;
-use yii\widgets\ActiveForm;
-use sadovojav\gallery\Module;
 use kartik\file\FileInput;
 use kartik\switchinput\SwitchInput;
 use sadovojav\gallery\AssetBundle;
+use sadovojav\gallery\Module;
+use yii\helpers\Html;
+use yii\widgets\ActiveForm;
 
 AssetBundle::register($this);
 
@@ -102,7 +102,6 @@ if (!$model->isNewRecord) {
                 'maxlength' => 50
             ]); ?>
         </div>
-
         <div class="col-md-2">
             <?= $form->field($model, 'status')->widget(SwitchInput::className(), [
                 'pluginOptions' => [
@@ -111,6 +110,9 @@ if (!$model->isNewRecord) {
                     'offColor' => 'danger',
                 ]
             ]); ?>
+        </div>
+        <div class="col-md-10">
+            <?= $form->field($model, 'code')->textInput(); ?>
         </div>
     </div>
 

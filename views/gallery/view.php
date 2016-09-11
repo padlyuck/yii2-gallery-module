@@ -44,6 +44,7 @@ $this->params['breadcrumbs'] = [
         'attributes' => [
             'id',
             'name',
+            'code',
             'status:boolean',
             'created',
             'updated',

@@ -53,10 +53,11 @@ class Gallery extends ActiveRecord
     public function rules()
     {
         return [
-            ['name', 'required'],
-            ['status', 'integer'],
+            [['name', 'code'], 'required'],
+            [['code'], 'unique'],
+            [['status'], 'integer'],
             [['created', 'updated'], 'safe'],
-            ['name', 'string', 'max' => 50],
+            [['name'], 'string', 'max' => 50],
         ];
     }
 
