@@ -15,7 +15,7 @@ class m160909_110007_gallery_code extends Migration
     public function safeUp()
     {
         try {
-            $this->addColumn($this->table, 'code', $this->string()->notNull()->unique());
+            $this->addColumn($this->table, 'code', $this->string()->notNull());
         } catch (\Exception $e) {
             echo Console::output(Console::ansiFormat($e->getMessage(), [Console::FG_RED]) . PHP_EOL);
             $this->down();
