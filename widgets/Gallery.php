@@ -26,6 +26,8 @@ class Gallery extends Widget
      * @var bool
      */
     public $caption = false;
+    /** @var string photogallery head title */
+    public $title;
     /**
      * @var
      */
@@ -41,16 +43,16 @@ class Gallery extends Widget
         if ($this->galleryId) {
             $model = BaseGallery::getDb()->cache(function () {
                 return BaseGallery::find()
-                                  ->where('id = :id', [':id' => $this->galleryId])
-                                  ->active()
-                                  ->one();
+                    ->where('id = :id', [':id' => $this->galleryId])
+                    ->active()
+                    ->one();
             }, $module->queryCacheDuration, $dependency);
         } else {
             $model = BaseGallery::getDb()->cache(function () {
                 return BaseGallery::find()
-                                  ->where('code = :code', [':code' => $this->galleryCode])
-                                  ->active()
-                                  ->one();
+                    ->where('code = :code', [':code' => $this->galleryCode])
+                    ->active()
+                    ->one();
             }, $module->queryCacheDuration, $dependency);
         }
 
@@ -60,11 +62,24 @@ class Gallery extends Widget
 
         if ($this->template) {
             return $this->render($this->template, [
+                'title' => $this->title,
                 'model' => $model,
                 'models' => $model->files,
             ]);
         } else {
             return $this->getDefaultGallery($model);
+        }
+    }
+
+    public function __set($name, $value)
+    {
+        /** shortcode return params in lower case */
+        if ($name === 'galleryid') {
+            $this->galleryId = $value;
+        } elseif ($name === 'gallerycode') {
+            $this->galleryCode = $value;
+        } else {
+            return parent::__set($name, $value);
         }
     }
 
